@@ -43,3 +43,10 @@ npm run test
 ```
 npm run dev
 ```
+
+# .env
+```
+PORT=4444
+SUPABASE_URL=https://psbjhtjgxucobejltbbu.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzYmpodGpneHVjb2Jlamx0YmJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTcxMDIyMDQsImV4cCI6MTk3MjY3ODIwNH0.ltvI2R-LB4mxlaASVHpZIytOtlSbmrzfWt23thyKCVw
+```
