@@ -1,4 +1,5 @@
 const express = require('express');
+const supabase = require('../../config/supabase');
 const { sequelize } = require('../../models');
 const db = require('../../models');
 
@@ -10,28 +11,15 @@ const Promo = db.promo;
 
 router.get('/', async (req, res) => {
   const { page } = req.query;
-  const offestData = (page - 1) * 10;
-  const creators = await Creators.findAll({
-    where: {
-      'profile_json.avatar': {
-        [Op.ne]: null,
-      }
-    },
-    limit: 10,
-    offset: offestData,
-    order: [['photos_count', 'DESC']],
-    attributes: [
-      'id',
-      'username',
-      'photos_count',
-      [sequelize.json('profile_json.videosCount'), 'videosCount'],
-      [sequelize.json('profile_json.postsCount'), 'postsCount'],
-      [sequelize.json('profile_json.photosCount'), 'photosCount'],
-      [sequelize.json('profile_json.avatarThumbs.c144'), 'avatarThumbs'],
-      [sequelize.json('profile_json.header'), 'header'],
-      [sequelize.json('profile_json.subscribePrice'), 'subscribePrice'],
-      [sequelize.json('profile_json.name'), 'name']],
-  });
+  const offsetData = (page - 1) * 10;
+  const { data: creators } = await supabase
+    .from('creators')
+    .select('id, username, photosCount, videosCount, postsCount, avatar, subscribePrice, name')
+    .not('avatar', 'eq', 'null')
+    .limit(10)
+    .order('photosCount', { ascending: false })
+    .range(offsetData, offsetData + 10);
+
   const CreatorsInfo = {
     status: 'success',
     data: creators
@@ -41,38 +29,17 @@ router.get('/', async (req, res) => {
 
 router.get('/search', async (req, res) => {
   const { page, s } = req.query;
-  const offestData = (page - 1) * 10;
-  const creators = await Creators.findAll({
-    where: {
-      username: {
-        [Op.like]: `%${s}%`,
-      },
-      [Op.or]: [
-        {
-          'profile_json.name': {
-            [Op.like]: `%${s}%`,
-          },
-        },
-      ],
-      'profile_json.avatar': {
-        [Op.ne]: null,
-      }
-    },
-    limit: 10,
-    offset: offestData,
-    order: [['photos_count', 'DESC']],
-    attributes: [
-      'id',
-      'username',
-      'photos_count',
-      [sequelize.json('profile_json.videosCount'), 'videosCount'],
-      [sequelize.json('profile_json.postsCount'), 'postsCount'],
-      [sequelize.json('profile_json.photosCount'), 'photosCount'],
-      [sequelize.json('profile_json.avatarThumbs.c144'), 'avatarThumbs'],
-      [sequelize.json('profile_json.header'), 'header'],
-      [sequelize.json('profile_json.subscribePrice'), 'subscribePrice'],
-      [sequelize.json('profile_json.name'), 'name']],
-  });
+  const offsetData = (page - 1) * 10;
+
+  const { data: creators } = await supabase
+    .from('creators')
+    .select('id, username, photosCount, videosCount, postsCount, avatar, subscribePrice, name')
+    .or(`username.like.*${s}*, name.like.*${s}*`)
+    .not('avatar', 'eq', 'null')
+    .limit(10)
+    .order('photosCount', { ascending: false })
+    .range(offsetData, offsetData + 10);
+
   const CreatorsInfo = {
     status: 'success',
     data: creators
