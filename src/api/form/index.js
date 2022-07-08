@@ -1,9 +1,6 @@
-const e = require('express');
 const express = require('express');
-const db = require('../../models');
+const supabase = require('../../config/supabase');
 
-const Social = db.social;
-const Category = db.category;
 const router = express.Router();
 
 router.post('/models', async (req, res) => {
@@ -18,12 +15,8 @@ router.post('/models', async (req, res) => {
   }
 
   try {
-    const social_data = await Social.create({
-      social,
-      username,
-      email,
-      completed_at: false
-    });
+    const { data: social_data } = await supabase.insert('creators_form', { type: social, creators_id: username, email });
+
     const dataJSON = {
       status: 'success',
       message: `${social} - Your suggestion has been added and is awaiting verification.`,
@@ -52,12 +45,8 @@ router.post('/addProfile', async (req, res) => {
   }
 
   try {
-    const social_data = await Social.create({
-      social,
-      username,
-      email,
-      completed_at: false
-    });
+    const { data: social_data } = await supabase.insert('creators_form', { type: social, creators_id: username, email });
+
     const dataJSON = {
       status: 'success',
       message: 'Your suggestion has been added and is awaiting verification.',
@@ -85,12 +74,8 @@ router.post('/addTrialLink', async (req, res) => {
   }
 
   try {
-    const social_data = await Social.create({
-      social,
-      username,
-      email,
-      completed_at: false
-    });
+    const { data: social_data } = await supabase.insert('creators_form', { type: social, creators_id: username, email });
+
     const dataJSON = {
       status: 'success',
       message: 'Your suggestion has been added and is awaiting verification.',
@@ -118,12 +103,7 @@ router.post('/category', async (req, res) => {
   }
 
   try {
-    const categoryData = await Category.create({
-      category,
-      username,
-      email,
-      completed_at: false
-    });
+    const { data: categoryData } = await supabase.insert('creators_form', { type: category, creators_id: username, email });
     const dataJSON = {
       status: 'success',
       message: 'Your suggestion has been added and is awaiting verification.',

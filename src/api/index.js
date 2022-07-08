@@ -2,8 +2,8 @@
 
 const emojis = require('./emojis');
 const creators = require('./creators');
-const redis = require('./redis');
 const form = require('./form');
+const promo = require('./promo');
 
 const router = express.Router();
 
@@ -16,4 +16,5 @@ router.get('/', (req, res) => {
 router.use('/emojis', emojis);
 router.use('/creators', creators);
 router.use('/form', form);
+router.use('/promo', promo);
 module.exports = router;
