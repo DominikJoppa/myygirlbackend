@@ -33,12 +33,8 @@ router.get('/search', async (req, res) => {
 
   const { data: creators } = await supabase
     .from('creators')
-    .select('id, username, photosCount, videosCount, postsCount, avatar, subscribePrice, name')
-    .or(`username.like.*${s}*, name.like.*${s}*`)
-    .not('avatar', 'eq', 'null')
-    .limit(10)
-    .order('photosCount', { ascending: false })
-    .range(offsetData, offsetData + 10);
+    .select()
+    .textSearch('fts', s);
 
   const CreatorsInfo = {
     status: 'success',
