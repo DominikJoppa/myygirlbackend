@@ -26,8 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/search', async (req, res) => {
-  const { page, s } = req.query;
-  const offsetData = (page - 1) * 10;
+  const { s } = req.query;
 
   const { data: creators } = await supabase
     .from('creators')
