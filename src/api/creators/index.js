@@ -64,11 +64,13 @@ router.get('/location', async (req, res) => {
     .order('photosCount', { ascending: false })
     .range(offsetData, offsetData + 10);
 
-  const creatorsPromo = await Promo();
+  if (creators.length !== 0) {
+    const creatorsPromo = await Promo();
 
-  for (let i = 0; i < creatorsPromo.length; i += 1) {
-    const randomPosition = Math.floor(Math.random() * creators.length);
-    creators.splice(randomPosition, 0, creatorsPromo[i]);
+    for (let i = 0; i < creatorsPromo.length; i += 1) {
+      const randomPosition = Math.floor(Math.random() * creators.length);
+      creators.splice(randomPosition, 0, creatorsPromo[i]);
+    }
   }
 
   const CreatorsInfo = {
@@ -91,11 +93,13 @@ router.get('/freeprice', async (req, res) => {
     .order('photosCount', { ascending: false })
     .range(offsetData, offsetData + 10);
 
-  const creatorsPromo = await Promo();
+  if (creators.length !== 0) {
+    const creatorsPromo = await Promo();
 
-  for (let i = 0; i < creatorsPromo.length; i += 1) {
-    const randomPosition = Math.floor(Math.random() * creators.length);
-    creators.splice(randomPosition, 0, creatorsPromo[i]);
+    for (let i = 0; i < creatorsPromo.length; i += 1) {
+      const randomPosition = Math.floor(Math.random() * creators.length);
+      creators.splice(randomPosition, 0, creatorsPromo[i]);
+    }
   }
 
   const CreatorsInfo = {
